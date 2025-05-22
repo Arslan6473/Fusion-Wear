@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛍️ Fusion Wear - E-commerce Platform
 
-## Getting Started
+**Fusion Wear** is a modern, full-featured e-commerce platform built with the MERN stack, using **Next.js** for the frontend. The platform supports product browsing, user authentication, cart management, and secure payments via **Stripe**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend:** Next.js, React, Tailwind CSS
+- **Backend:** Node.js, Express.js, MongoDB
+- **Authentication:** JWT / OAuth (configurable)
+- **Payment Integration:** Stripe
+- **State Management:** Redux / Context API
+- **Image Hosting:** Cloudinary / Local uploads
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Features
 
-## Learn More
+- ✅ User registration & login
+- ✅ Product catalog with filtering & sorting
+- ✅ Shopping cart with quantity adjustments
+- ✅ Stripe-powered secure checkout
+- ✅ Order history for users
+- ✅ Admin panel to manage products & orders
+- ✅ Responsive UI (mobile-first)
+- ✅ SEO-friendly with server-side rendering (SSR)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- Node.js >= 16.x
+- MongoDB (local or cloud)
+- Stripe account & API keys
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
