@@ -70,7 +70,7 @@ getUsersOrders()
     }
 
     return (
-        <div className="container max-w-4xl py-8">
+        <div className="container w-[100vw] flex justify-center items-center mx-auto  py-8">
             {orderId ? (
                 <Card className="border-primary">
                     <CardHeader className="text-center">
