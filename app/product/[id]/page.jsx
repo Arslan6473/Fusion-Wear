@@ -211,12 +211,13 @@ function ARCamera({ product, onClose }) {
         
         <div className="flex items-center space-x-2 bg-white bg-opacity-20 text-white px-4 py-2 rounded">
           <Move className="h-4 w-4" />
-          <span className="hidden sm:inline">Drag to move</span>
+          <span className="hidden sm:inline text-black">Drag to move</span>
         </div>
       </div>
     </div>
   );
 }
+
 
 export default function ProductView() {
   const { id } = useParams();
@@ -258,10 +259,11 @@ export default function ProductView() {
       return;
     }
 
+    const price = product.onSale ? product.salePrice : product.price;
     const cartItem = {
       id: product._id,
       name: product.name,
-      price: product.onSale ? product.salePrice : product.price,
+      price: price,
       image: product.image,
       quantity: quantity,
       size: selectedSize,
@@ -288,10 +290,13 @@ export default function ProductView() {
 
       updatedCart[existingItemIndex].quantity = newQuantity;
       setCartItems(updatedCart);
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
       toast.success('Item quantity updated in cart');
     } else {
       // If not exists, add new item
-      setCartItems([...cartItems, cartItem]);
+      const newCartItems = [...cartItems, cartItem];
+      setCartItems(newCartItems);
+      localStorage.setItem("cartItems", JSON.stringify(newCartItems));
       toast.success('Item added to cart');
     }
   };
@@ -551,7 +556,16 @@ export default function ProductView() {
                 <h3 className="font-medium text-sm group-hover:text-blue-600">
                   {item.name}
                 </h3>
-                <p className="mt-1 text-gray-700">${formatPrice(item.price)}</p>
+                <p className="mt-1 text-gray-700">
+                  {item.onSale ? (
+                    <>
+                      <span className="text-red-600">${formatPrice(item.salePrice)}</span>
+                      <span className="text-gray-500 text-xs line-through ml-1">${formatPrice(item.price)}</span>
+                    </>
+                  ) : (
+                    <span>${formatPrice(item.price)}</span>
+                  )}
+                </p>
               </div>
             ))}
           </div>

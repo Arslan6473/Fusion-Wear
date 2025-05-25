@@ -39,7 +39,6 @@ export function AppProvider({ children }) {
     }
   }, [cartItems, hasHydrated]);
 
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -99,15 +98,13 @@ export function AppProvider({ children }) {
   };
 
   useEffect(() => {
+    getAllProducts();
     if (user) {
-      getAllProducts();
       getUsersOrders();
-      if(user.role === "admin"){
-   
+      if (user.role === "admin") {
         fetchAllOrders();
       }
     }
-    
   }, [user]);
 
   const logout = async () => {
@@ -138,7 +135,9 @@ export function AppProvider({ children }) {
     products,
     setProducts,
     hasHydrated,
-    allOrders, setAllOrders,getUsersOrders 
+    allOrders,
+    setAllOrders,
+    getUsersOrders,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -35,6 +35,7 @@ import { useAppcontext } from '@/context/AppContext';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import ApiServices from '@/lib/ApiServices';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -160,8 +161,8 @@ export default function Navbar() {
                 {cartItems.length > 0 ? (
                   <div className="flex flex-col h-full px-4 pb-4">
                     <div className="flex-1 overflow-auto py-4">
-                      {cartItems.map((item) => (
-                        <div key={item.id} className="flex items-center py-4">
+                      {cartItems.map((item, index) => (
+                        <div key={index} className="flex items-center py-4">
                           <img
                             src={item.image}
                             alt={item.name}
@@ -219,7 +220,13 @@ export default function Navbar() {
                         <span>Total</span>
                         <span>${cartTotal.toFixed(2)}</span>
                       </div>
-                      <Button onClick={() => router.push("/checkout")} className="w-full mt-4 cursor-pointer">Checkout</Button>
+                      <Button onClick={() => {
+                        if (!user) {
+                          toast.warning("Login to place order.")
+                        } else {
+                          router.push("/checkout")
+                        }
+                      }} className="w-full mt-4 cursor-pointer">Checkout</Button>
                     </div>
                   </div>
                 ) : (

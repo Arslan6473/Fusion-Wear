@@ -302,15 +302,15 @@ export default function ProductsPage() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {currentProducts.map((product) => (
-                  <Card key={product._id} className="hover:shadow-lg transition-shadow">
+                  <Card key={product._id} className="hover:shadow-lg transition-shadow p-0 m-0">
                     <CardHeader className="relative p-0">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-64 object-cover rounded-t-lg"
+                        className="w-full h-80 object-cover rounded-t-lg"
                       />
                       <div 
-                        className="w-7 h-7 rounded-full flex justify-center items-center bg-red-500 absolute cursor-pointer top-0 right-16" 
+                        className="w-7 h-7 rounded-full flex justify-center items-center bg-red-500 absolute cursor-pointer top-2 right-16" 
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeleteClick(product._id);
@@ -320,7 +320,7 @@ export default function ProductsPage() {
                       </div>
 
                       <div 
-                        className="w-7 h-7 rounded-full flex justify-center items-center bg-blue-500 absolute cursor-pointer top-0 right-4" 
+                        className="w-7 h-7 rounded-full flex justify-center items-center bg-blue-500 absolute cursor-pointer top-2 right-4" 
                         onClick={(e) => {
                           e.stopPropagation();
                           setEditProduct(product);
@@ -354,9 +354,9 @@ export default function ProductsPage() {
                         </span>
                       </div>
                     </CardContent>
-                    <CardFooter className="flex justify-between items-center px-4 pt-0">
+                    <CardFooter className="flex justify-between items-center px-4 pt-0 pb-2">
                       <span className="font-bold">${product.price.toFixed(2)}</span>
-                      <Button size="sm" className={"cursor-pointer"}>Add to Cart</Button>
+                
                     </CardFooter>
                   </Card>
                 ))}

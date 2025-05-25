@@ -36,6 +36,7 @@ import { useAppcontext } from "@/context/AppContext";
 import { ChevronDown, Filter, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const categories = [
   { value: "all", label: "All Categories" },
@@ -84,27 +85,43 @@ export default function ProductsPage() {
   });
 
   const handleAddToCart = (product, e) => {
-    e.stopPropagation(); 
-    const existingItemIndex = cartItems.findIndex(item => item.id === product._id);
+    e.stopPropagation();
+    const price = product.onSale ? product.salePrice : product.price;
     
+    // Basic cart item (without size/color selection)
+    const cartItem = {
+      id: product._id,
+      name: product.name,
+      price: price,
+      quantity: 1,
+      image: product.image,
+      stock: product.stock
+    };
+
+    const existingItemIndex = cartItems.findIndex(
+      item => item.id === product._id && 
+             (!item.size || item.size === cartItem.size) && 
+             (!item.color || item.color?.name === cartItem.color?.name)
+    );
+
     if (existingItemIndex >= 0) {
-      // If exists, update quantity
       const updatedCartItems = [...cartItems];
-      updatedCartItems[existingItemIndex].quantity += 1;
+      const newQuantity = updatedCartItems[existingItemIndex].quantity + 1;
+      
+      if (newQuantity > product.stock) {
+        toast.warning(`Cannot add more than available stock (${product.stock})`);
+        return;
+      }
+
+      updatedCartItems[existingItemIndex].quantity = newQuantity;
       setCartItems(updatedCartItems);
       localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+      toast.success('Item quantity updated in cart');
     } else {
-      // If not exists, add new item
-      const cartItem = {
-        id: product._id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-        image: product.image,
-      };
       const newCartItems = [...cartItems, cartItem];
       setCartItems(newCartItems);
       localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+      toast.success('Item added to cart');
     }
   };
 
@@ -274,17 +291,18 @@ export default function ProductsPage() {
                   <Card 
                     key={product._id} 
                     onClick={() => router.push(`/product/${product._id}`)}
-                    className="hover:shadow-lg transition-shadow cursor-pointer"
+                    className="hover:shadow-lg transition-shadow cursor-pointer p-0 m-0"
                   >
                     <CardHeader className="relative p-0">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-64 object-cover rounded-t-lg"
+                        className="w-full h-80 object-cover rounded-t-lg"
                       />
-                      {product.badge && (
-                        <Badge className="absolute top-4 right-4 bg-blue-600">
-                          {product.badge}
+               
+                      {product.onSale && (
+                        <Badge className="absolute top-4 left-4 bg-red-500">
+                          SALE
                         </Badge>
                       )}
                     </CardHeader>
@@ -312,10 +330,19 @@ export default function ProductsPage() {
                         </span>
                       </div>
                     </CardContent>
-                    <CardFooter className="flex justify-between items-center px-4">
-                      <span className="font-bold">${product.price.toFixed(2)}</span>
+                    <CardFooter className="flex justify-between items-center px-4  pb-2">
+                      <div className="flex flex-col">
+                        {product.onSale ? (
+                          <>
+                            <span className="font-bold text-red-600">${product.salePrice.toFixed(2)}</span>
+                            <span className="text-sm text-gray-500 line-through">${product.price.toFixed(2)}</span>
+                          </>
+                        ) : (
+                          <span className="font-bold">${product.price.toFixed(2)}</span>
+                        )}
+                      </div>
                       <Button 
-                      className={"cursor-pointer"}
+                        className={"cursor-pointer"}
                         size="sm" 
                         onClick={(e) => handleAddToCart(product, e)}
                       >

@@ -43,8 +43,8 @@ function CheckoutContent() {
                     setOrderId(res.data.order.orderId);
                     localStorage.removeItem("cartItems");
                     localStorage.removeItem("orderData");
-getUsersOrders()
                 }
+                await getUsersOrders()
                 router.replace("/checkout/created");
             }
         } catch (err) {

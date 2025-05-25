@@ -210,8 +210,8 @@ const router = useRouter()
             ) : (
               <>
                 <div className="space-y-4 max-h-[400px] overflow-y-auto">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex items-start gap-4 pb-4 border-b">
+                  {cartItems.map((item,index) => (
+                    <div key={index} className="flex items-start gap-4 pb-4 border-b">
                       <div className="relative w-20 h-20 rounded-md overflow-hidden">
                         <Image
                           src={item.image}
