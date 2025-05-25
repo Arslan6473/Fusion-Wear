@@ -233,7 +233,7 @@ export default function ProductsPage() {
             setEditProduct(null)
             router.push("/admin/product")
           }}>
-            <Button>Add Product</Button>
+            <Button className={"cursor-pointer"}>Add Product</Button>
           </div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div className="relative w-full sm:w-64">

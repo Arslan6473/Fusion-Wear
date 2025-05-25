@@ -9,7 +9,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { useState } from "react";
 import { X, Plus } from "lucide-react";
 import { useAppcontext } from "@/context/AppContext";
-import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/helpers";
+import {  deleteFromImageKit, uploadToImageKit } from "@/lib/helpers";
 import ApiServices from "@/lib/ApiServices";
 
 export default function ProductForm() {
@@ -117,18 +117,28 @@ export default function ProductForm() {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (!file) return;
+
+    try {
+      // Delete old image if exists
       if (product.image && product.imagePublicId) {
-        await deleteFromCloudinary(product.imagePublicId);
+        await deleteFromImageKit(product.imagePublicId);
       }
 
-      const uploaded = await uploadToCloudinary(file);
+      // Upload new image
+      const uploaded = await uploadToImageKit(file);
+
       setImagePreview(uploaded.url);
       setProduct({
         ...product,
         image: uploaded.url,
-        imagePublicId: uploaded.public_id,
+        imagePublicId: uploaded.fileId,
       });
+
+    } catch (error) {
+      console.error("Image update error:", error);
+      // Add your error handling UI here
+      alert(error.message || "Failed to update image");
     }
   };
 
@@ -136,15 +146,15 @@ export default function ProductForm() {
     const file = e.target.files[0];
     if (file) {
       if (product.transparentImage && product.transparentImagePublicId) {
-        await deleteFromCloudinary(product.transparentImagePublicId);
+        await deleteFromImageKit(product.transparentImagePublicId);
       }
 
-      const uploaded = await uploadToCloudinary(file);
+      const uploaded = await uploadToImageKit(file);
       setTransparentImagePreview(uploaded.url);
       setProduct({
         ...product,
         transparentImage: uploaded.url,
-        transparentImagePublicId: uploaded.public_id,
+        transparentImagePublicId: uploaded.fileId,
       });
     }
   };
@@ -196,8 +206,8 @@ export default function ProductForm() {
 
               <div>
                 <Label htmlFor="category">Category</Label>
-                <Select 
-                  value={product.category} 
+                <Select
+                  value={product.category}
                   onValueChange={handleSelectChange}
                 >
                   <SelectTrigger className="mt-2">
